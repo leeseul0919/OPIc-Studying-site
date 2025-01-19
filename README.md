@@ -20,7 +20,7 @@ planning to add
 ### script register
 ![image](https://github.com/user-attachments/assets/59d6d57e-481a-4e11-b099-d80a8bb32c6c)
 ```
-- register my script and its memo
+- register my script and memo
 
 1. select category
 2. select detail category

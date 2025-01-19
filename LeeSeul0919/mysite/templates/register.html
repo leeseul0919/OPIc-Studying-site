@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Registration</title>
+    <style>
+        #question-content-container {
+            margin-top: 10px; /* 상단 여백 추가 */
+        }
+        .question-content-type {
+            font-size: 1.2em; /* 글씨 크기 조정 */
+            font-weight: bold; /* 글씨 두께 조정 */
+            margin-top: 10px; /* 상단 여백 추가 */
+        }
+        .question-content-text {
+            font-size: 1.2em; /* 글씨 크기 조정 */
+            margin-left: 20px; /* 왼쪽 여백 추가 */
+        }
+    </style>
+</head>
+<body>
+    <h1>Script Registration</h1>
+    <form id="registration-form" method="POST" action="/register">
+        <label for="category">Category:</label>
+        <select id="category" name="CG_id">
+            <option value="">0. Select a category</option>
+        </select><br>
+
+        <label for="question">Question:</label>
+        <select id="question" name="QST_id">
+        </select><br>
+
+        <div id="question-content-container">
+            <strong id="question-content-label">Question Content</strong>
+            <div id="question-content">
+            </div>
+        </div><br>
+
+        <label for="script">Script:</label>
+        <textarea id="script" name="ANS_script" rows="4" cols="50"></textarea><br>
+
+        <label for="memo">Memo:</label>
+        <textarea id="memo" name="ANS_memo" rows="4" cols="50"></textarea><br>
+
+        <button type="submit">Submit</button>
+        <a href="/login_index">To main</a>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/categories')
+                .then(response => response.json())
+                .then(data => {
+                    const categorySelect = document.getElementById('category');
+                    data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.CG_id;
+                        option.textContent = `${category.CG_id}. ${category.CG_name}`;
+                        categorySelect.appendChild(option);
+                    });
+                });
+
+            document.getElementById('category').addEventListener('change', function() {
+                const categoryId = this.value;
+                fetch(`/questions?CG_id=${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const questionSelect = document.getElementById('question');
+                        questionSelect.innerHTML = '';  // 기존 옵션 제거
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = 'Select a question';
+                        questionSelect.appendChild(defaultOption);
+                        data.forEach(question => {
+                            const option = document.createElement('option');
+                            option.value = question.QST_id;
+                            option.textContent = question.QST_tag || 'No Tag';
+                            questionSelect.appendChild(option);
+                        });
+                    });
+            });
+
+            document.getElementById('question').addEventListener('change', function() {
+                const questionId = this.value;
+                const categoryId = document.getElementById('category').value;
+                if (questionId && categoryId) {
+                    fetch(`/question-content?QST_id=${questionId}&CG_id=${categoryId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const questionContentDiv = document.getElementById('question-content');
+                            questionContentDiv.innerHTML = ''; // 기존 내용 제거
+                            if (data) {
+                                data.forEach(item => {
+                                    const typeHeading = document.createElement('div');
+                                    typeHeading.className = 'question-content-type';
+                                    typeHeading.textContent = `Type ${item.QST_type}:`;
+                                    questionContentDiv.appendChild(typeHeading);
+
+                                    const typeContent = document.createElement('div');
+                                    typeContent.className = 'question-content-text';
+                                    typeContent.textContent = item.QST_content || 'No content available';
+                                    questionContentDiv.appendChild(typeContent);
+                                });
+                            }
+                        });
+
+                    // 새로운 API 호출을 추가하여 스크립트 데이터를 가져오기
+                    fetch(`/get-script-data?QST_id=${questionId}&CG_id=${categoryId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('script').value = data.ANS_script || '';
+                            document.getElementById('memo').value = data.ANS_memo || '';
+                        });
+                } else {
+                    document.getElementById('question-content').innerHTML = '';
+                    document.getElementById('script').value = '';
+                    document.getElementById('memo').value = '';
+                }
+            });
+        });
+
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            const category = document.getElementById('category');
+            const question = document.getElementById('question');
+            const script = document.getElementById('script');
+
+            // 카테고리가 선택되지 않았을 때
+            if (category.value === "") {
+                alert("Please select a category.");
+                event.preventDefault(); // 폼 전송 방지
+                return;
+            }
+
+            // 질문이 선택되지 않았을 때
+            if (question.value === "") {
+                alert("Please select a question.");
+                event.preventDefault(); // 폼 전송 방지
+                return;
+            }
+
+            // 스크립트가 입력되지 않았을 때
+            if (script.value.trim() === "") {
+                alert("Please enter the script.");
+                event.preventDefault(); // 폼 전송 방지
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -14,6 +14,14 @@
 ```
 
 ### script register
+![image](https://github.com/user-attachments/assets/59d6d57e-481a-4e11-b099-d80a8bb32c6c)
+```
+- register my script and its memo
 
+1. select category
+2. select detail category
+3. enter my script and memo
+4. press submit button (complete)
+```
 
 ### random question (with gTTS)

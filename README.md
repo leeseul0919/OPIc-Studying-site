@@ -25,3 +25,8 @@
 ```
 
 ### random question (with gTTS)
+![image](https://github.com/user-attachments/assets/7094af57-22df-4c46-aaed-4a7d420087e0)
+
+![image](https://github.com/user-attachments/assets/4cb18698-e9c7-49b1-a41e-50b6f5aa5135)
+
+![image](https://github.com/user-attachments/assets/51265a40-87cb-4b62-ac1c-86015ad262fa)

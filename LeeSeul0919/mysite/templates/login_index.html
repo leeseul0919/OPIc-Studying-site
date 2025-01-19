@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+</head>
+<body>
+    <h1>Welcome to the OPIc Memorization Tool</h1>
+    <p>Logged in as: {{ user_id }}</p>  <!-- 로그인한 유저의 ID 출력 -->
+
+    <ul>
+        <li><a href="/scriptlist">Script List</a></li>
+        <li><a href="/register">Script Registration</a></li>
+        <li><a href="/memorization">Memorization Page</a></li>
+    </ul>
+
+    <button onclick="location.href='/logout'">Logout</button>
+</body>
+</html>

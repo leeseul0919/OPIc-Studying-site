@@ -2,7 +2,7 @@
 ### Toy Project / Currently hosting on pythonanywhere
 ```
 planning to add
-1. Script sharing function (like community
+1. Script sharing function (like community)
 ```
 
 ### main page (login)
